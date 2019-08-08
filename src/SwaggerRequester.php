@@ -30,7 +30,7 @@ class SwaggerRequester
 
     public function __construct()
     {
-        $this->guzzleHttpClient = new Client(['headers' => ['User-Agent' => 'Swagger Test']]);
+        $this->guzzleHttpClient = new Client(['headers' => ['X-User-Agent' => 'Swagger Test']]);
     }
 
     public function withSwaggerSchema($schema)
