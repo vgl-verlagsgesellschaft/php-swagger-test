@@ -30,7 +30,7 @@ class SwaggerRequester
 
     public function __construct()
     {
-        $this->guzzleHttpClient = new Client(['headers' => ['User-Agent' => 'Swagger Test']]);
+        $this->guzzleHttpClient = new Client(['headers' => ['X-User-Agent' => 'Swagger Test']]);
     }
 
     public function withSwaggerSchema($schema)
@@ -151,15 +151,16 @@ class SwaggerRequester
             $this->requestHeader
         );
 
+        $basePath = $this->swaggerSchema->getBasePath();
+        $pathName = $this->path;
+
         // Defining Variables
         $serverUrl = null;
         if ($this->swaggerSchema->getSpecificationVersion() === '3') {
-            $serverUrl = $this->swaggerSchema->getServerUrl();
+            $serverUrl = $this->swaggerSchema->getServerUrl() . $pathName;
         } else {
             $httpSchema = $this->swaggerSchema->getHttpSchema();
             $host = $this->swaggerSchema->getHost();
-            $basePath = $this->swaggerSchema->getBasePath();
-            $pathName = $this->path;
             $serverUrl = "$httpSchema://$host$basePath$pathName$paramInQuery";
         }
 
