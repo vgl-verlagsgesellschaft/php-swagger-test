@@ -145,10 +145,12 @@ abstract class SwaggerBody
 
         $type = $schema['type'];
 
+        $nullable = isset($schema['nullable']) ? $schema['nullable'] : false;
+
         $validators = [
-            function () use ($name, $body, $type)
+            function () use ($name, $body, $type, $nullable)
             {
-                return $this->matchNull($name, $body, $type);
+                return $this->matchNull($name, $body, $type, $nullable);
             },
 
             function () use ($name, $schema, $body, $type)
@@ -298,18 +300,17 @@ abstract class SwaggerBody
      * @param $name
      * @param $body
      * @param $type
+     * @param $nullable
      * @return bool
      * @throws NotMatchedException
      */
-    protected function matchNull($name, $body, $type)
+    protected function matchNull($name, $body, $type, $nullable)
     {
         if (!is_null($body)) {
             return null;
         }
 
-        if (isset($this->structure['content']) === true &&
-            isset($this->structure['content'][key($this->structure['content'])]['schema']['nullable']) == true &&
-            $this->structure['content'][key($this->structure['content'])]['schema']['nullable'] === true) {
+        if ($nullable === true) {
             return true;
         }
 
