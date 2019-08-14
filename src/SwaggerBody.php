@@ -307,6 +307,12 @@ abstract class SwaggerBody
             return null;
         }
 
+        if (isset($this->structure['content']) === true &&
+            isset($this->structure['content'][key($this->structure['content'])]['schema']['nullable']) == true &&
+            $this->structure['content'][key($this->structure['content'])]['schema']['nullable'] === true) {
+            return true;
+        }
+
         if (false === $this->swaggerSchema->isAllowNullValues()) {
             throw new NotMatchedException(
                 "Value of property '$name' is null, but should be of type '$type'",

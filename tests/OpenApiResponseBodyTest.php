@@ -410,4 +410,11 @@ class OpenApiResponseBodyTest extends OpenApiBodyTestCase
         $responseParameter = $this->openApiSchema2()->getResponseParameters('/v2/anyvalue', 'get', 200);
         $this->assertTrue($responseParameter->match($body));
     }
+
+    public function testNullableInResponseBody()
+    {
+        $body = null;
+        $responseParameter = $this->openApiSchema3()->getResponseParameters('/tests/nullable', 'get', 200);
+        $this->assertTrue($responseParameter->match($body));
+    }
 }
