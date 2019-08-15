@@ -432,4 +432,22 @@ class OpenApiResponseBodyTest extends OpenApiBodyTestCase
         $responseParameter = $this->openApiSchema3()->getResponseParameters('/tests/nullable_object', 'get', 200);
         $this->assertTrue($responseParameter->match($body));
     }
+
+    public function testAdditionalPropertiesInObjectInResponseBody()
+    {
+        $body = ['value1' => 1, 'value2' => 2];
+        $responseParameter = $this->openApiSchema3()->getResponseParameters('/tests/additional_properties', 'get', 200);
+        $this->assertTrue($responseParameter->match($body));
+    }
+
+    /**
+     * @expectedException  \ByJG\Swagger\Exception\NotMatchedException
+     * @expectedExceptionMessage Expected 'value2' to be numeric, but found 'string'
+     */
+    public function testAdditionalPropertiesInObjectInResponseBodyDoNotMatch()
+    {
+        $body = ['value1' => 1, 'value2' => 'string'];
+        $responseParameter = $this->openApiSchema3()->getResponseParameters('/tests/additional_properties', 'get', 200);
+        $this->assertTrue($responseParameter->match($body));
+    }
 }

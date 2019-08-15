@@ -9,6 +9,7 @@ use ByJG\Swagger\Exception\NotMatchedException;
 abstract class SwaggerBody
 {
     const SWAGGER_PROPERTIES="properties";
+    const SWAGGER_ADDITIONAL_PROPERTIES="additionalProperties";
     const SWAGGER_REQUIRED="required";
 
     /**
@@ -197,6 +198,10 @@ abstract class SwaggerBody
      */
     public function matchObjectProperties($name, $schema, $body)
     {
+        if(isset($schema[self::SWAGGER_ADDITIONAL_PROPERTIES]) && !isset($schema[self::SWAGGER_PROPERTIES])) {
+            $schema[self::SWAGGER_PROPERTIES] = [];
+        }
+
         if (!isset($schema[self::SWAGGER_PROPERTIES])) {
             return null;
         }
@@ -239,13 +244,18 @@ abstract class SwaggerBody
             );
         }
 
-        if (count($body) > 0) {
+        if (count($body) > 0 && !isset($schema[self::SWAGGER_ADDITIONAL_PROPERTIES])) {
             throw new NotMatchedException(
                 "The property(ies) '"
                 . implode(', ', array_keys($body))
                 . "' has not defined in '$name'",
                 $body
             );
+        }
+
+        foreach ($body as $name => $prop) {
+            $def = $schema[self::SWAGGER_ADDITIONAL_PROPERTIES];
+            $this->matchSchema($name, $def, $prop);
         }
         return true;
     }
