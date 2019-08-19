@@ -157,7 +157,7 @@ class SwaggerRequester
         // Defining Variables
         $serverUrl = null;
         if ($this->swaggerSchema->getSpecificationVersion() === '3') {
-            $serverUrl = $this->swaggerSchema->getServerUrl() . $pathName;
+            $serverUrl = $this->swaggerSchema->getServerUrl() . $pathName . $paramInQuery;
         } else {
             $httpSchema = $this->swaggerSchema->getHttpSchema();
             $host = $this->swaggerSchema->getHost();
