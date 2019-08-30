@@ -95,7 +95,7 @@ class SwaggerRequester
     }
 
     /**
-     * @param null $requestBody
+     * @param mixed $requestBody
      * @return SwaggerRequester
      */
     public function withRequestBody($requestBody)
