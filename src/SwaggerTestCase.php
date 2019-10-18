@@ -17,7 +17,7 @@ abstract class SwaggerTestCase extends TestCase
     /**
      * @throws GenericSwaggerException
      */
-    protected function setUp()
+    protected function setUp() : void
     {
         if (empty($this->filePath)) {
             throw new GenericSwaggerException('You have to define the property $filePath');
