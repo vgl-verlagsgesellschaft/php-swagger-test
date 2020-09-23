@@ -209,6 +209,7 @@ abstract class AbstractRequester
 
         $uri = $this->psr7Request->getUri()
             ->withScheme($uriSchema->getScheme())
+            ->withUserInfo($uriSchema->getUsername(), $uriSchema->getPassword())
             ->withHost($uriSchema->getHost())
             ->withPort($uriSchema->getPort())
             ->withPath($uriSchema->getPath() . $this->psr7Request->getUri()->getPath());
